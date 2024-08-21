@@ -6,8 +6,8 @@ serverPort = 8080
 
 class MyServer(BaseHTTPRequestHandler):
 
-
-    def get_context_data(self):
+    @staticmethod
+    def get_context_data():
         with open("index.html", "r", encoding="utf-8") as f:
             context = f.read()
         return context
@@ -20,18 +20,13 @@ class MyServer(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    # Инициализация веб-сервера, который будет по заданным параметрам в сети
-    # принимать запросы и отправлять их на обработку специальному классу, который был описан выше
     webServer = HTTPServer((hostName, serverPort), MyServer)
     print("Server started http://%s:%s" % (hostName, serverPort))
 
     try:
-        # Cтарт веб-сервера в бесконечном цикле прослушивания входящих запросов
         webServer.serve_forever()
     except KeyboardInterrupt:
-        # Корректный способ остановить сервер в консоли через сочетание клавиш Ctrl + C
         pass
 
-    # Корректная остановка веб-сервера, чтобы он освободил адрес и порт в сети, которые занимал
     webServer.server_close()
     print("Server stopped.")
